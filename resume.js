@@ -181,6 +181,11 @@ function feedDataToTemplate() {
 }
 
 function hideButton(){
+    
+    if(window.resume.length === 1){
+        document.getElementById('prevBtn').style.visibility='hidden';
+        document.getElementById('nxtBtn').style.visibility='hidden';
+    }
     if(window.current === 0){
         document.getElementById('prevBtn').style.visibility='hidden';
     }
