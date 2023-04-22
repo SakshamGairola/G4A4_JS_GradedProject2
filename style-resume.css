@@ -13,8 +13,7 @@
 .upper{
 	width: 100%;
 	display: flex;
-	justify-content: space-between;
-	/* border: 1px solid greenyellow; */
+	justify-content: space-evenly;
 	margin: 5% 2%;
 }
 
