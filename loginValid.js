@@ -2,7 +2,7 @@ function handlesubmit(){
     const userName = document.getElementById('userName').value;
     const password = document.getElementById('password').value;
 
-    console.log(userName.value, password.value)
+    // console.log(userName.value, password.value)
     if (!userName || !password ){
         return alert("Username/Password required");
     }
@@ -19,5 +19,5 @@ function handlesubmit(){
 
     localStorage.setItem('user', JSON.stringify(user));
 
-    window.location = "/resume.html"
+    window.location = "./resume.html"
 }

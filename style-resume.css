@@ -6,6 +6,10 @@
 	width: 100%;
 }
 
+.error{
+	visibility: hidden;
+}
+
 .content{
 	width: 90%;
 }
@@ -25,6 +29,7 @@
 
 .upper input{
 	padding: 6px;
+	visibility: visible !important;
 }
 
 .main{

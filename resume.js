@@ -1,35 +1,38 @@
-function onLoad(){
+function onLoad() {
     fetch('./data.json')
         .then(res => res.json())
         .then(data => {
             // console.log(data)
-            window.resume = data.resume
+            window.resumeList = data.resume
+            window.resumeBackup = window.resumeList
             window.current = 0
             feedDataToTemplate()
+            displaySearchResult()
         });
 
 }
 
 
-function loadNextCandidate(){
+function loadNextCandidate() {
     window.current += 1;
     feedDataToTemplate();
 }
 
-function loadPreviousCandidate(){
+function loadPreviousCandidate() {
     window.current -= 1;
     feedDataToTemplate();
 }
 
 function feedDataToTemplate() {
-    
+
     // console.log(jsonData)
-    const candidate = window.resume[window.current];
+    const candidate = window.resumeList[window.current];
     // console.log(candidate)
     let { basics, skills, work, Internship: internship, projects, education, achievements, interests } = candidate;
-    
-    {let introEl = document.querySelector('.main > .intro  > div');
-    var setHTML = `
+
+    {
+        let introEl = document.querySelector('.main > .intro  > div');
+        var setHTML = `
         <div class="candidate-name">
 			<span id="candidateName">${basics.name}</span>
 	    </div>
@@ -38,10 +41,12 @@ function feedDataToTemplate() {
 		    <span id="position">${basics.AppliedFor}</span>
         </div>
     `;
-    introEl.innerHTML = setHTML;}
+        introEl.innerHTML = setHTML;
+    }
 
-    {let workExpEl = document.querySelector('#workExp');
-    var setHTML = `
+    {
+        let workExpEl = document.querySelector('#workExp');
+        var setHTML = `
         <label for="companyName">Company Name: </label>
         <span id="companyName">${work["Company Name"]}</span>
         <br />
@@ -57,19 +62,23 @@ function feedDataToTemplate() {
         <label for="summary">Summary: </label>
         <span id="summary">${work["Summary"]}</span>
     `;
-    workExpEl.innerHTML = setHTML;}
+        workExpEl.innerHTML = setHTML;
+    }
 
-    {let projectsEl = document.querySelector('#projects');
-    var setHTML = `
+    {
+        let projectsEl = document.querySelector('#projects');
+        var setHTML = `
         <span id="projectLabel">
             ${projects.name}:
         </span>
         <span id="projectSummary">${projects.description}</span>
     `;
-    projectsEl.innerHTML = setHTML;}
+        projectsEl.innerHTML = setHTML;
+    }
 
-   { let educationEl = document.querySelector('#education');
-    var setHTML = `
+    {
+        let educationEl = document.querySelector('#education');
+        var setHTML = `
         <ul>
             <li>
                 <label for="ug">UG: </label>
@@ -89,10 +98,12 @@ function feedDataToTemplate() {
             </li>
         </ul>
     `;
-    educationEl.innerHTML = setHTML;}
+        educationEl.innerHTML = setHTML;
+    }
 
-    {let internshipEl = document.querySelector('#internship');
-    var setHTML = `
+    {
+        let internshipEl = document.querySelector('#internship');
+        var setHTML = `
         <ul>
             <li>
                 <label for="companyName">
@@ -128,29 +139,33 @@ function feedDataToTemplate() {
             </li>
         </ul>
     `;
-    internshipEl.innerHTML = setHTML;}
-
-    {let achievementsEl = document.querySelector('#achievement');
-    // console.log(achievements["Summary"])
-    var setHTML = `
-    <ul>
-    `
-    for (let summary of achievements["Summary"]) {
-        setHTML += `
-        <li>${summary}</li>
-        `
-        // console.log(summary)
+        internshipEl.innerHTML = setHTML;
     }
 
-    setHTML += `
+    {
+        let achievementsEl = document.querySelector('#achievement');
+        // console.log(achievements["Summary"])
+        var setHTML = `
+    <ul>
+    `
+        for (let summary of achievements["Summary"]) {
+            setHTML += `
+        <li>${summary}</li>
+        `
+            // console.log(summary)
+        }
+
+        setHTML += `
     </ul>
     `;
-    achievementsEl.innerHTML = setHTML;}
+        achievementsEl.innerHTML = setHTML;
+    }
 
 
-    {let aboutSideEl = document.querySelector('.aboutSide');
-    // console.log(aboutSideEl);
-    var setHTML = `
+    {
+        let aboutSideEl = document.querySelector('.aboutSide');
+        // console.log(aboutSideEl);
+        var setHTML = `
     <div class="aboutSideInfo">
         <h3>Personal Information</h3>
         <span>${basics.phone}</span><br />
@@ -159,57 +174,85 @@ function feedDataToTemplate() {
     </div>
     <div class="aboutSideInfo">
         <h3>Techinal Skills</h3>`;
-    
-    for (let skill of skills.keywords ){
-        setHTML += `
+
+        for (let skill of skills.keywords) {
+            setHTML += `
             <span>${skill}</span><br />
         `;
-    }
-    setHTML += `</div>
+        }
+        setHTML += `</div>
     <div class="aboutSideInfo">
         <h3>Hobbies</h3>`;
-        for (let hobby of interests.hobbies ){
+        for (let hobby of interests.hobbies) {
             setHTML += `
             <span>${hobby}</span><br />
             `;
         }
-    setHTML += `</div>`;
+        setHTML += `</div>`;
 
-    aboutSideEl.innerHTML = setHTML;}
-
+        aboutSideEl.innerHTML = setHTML;
+    }
     hideButton()
 }
 
-function hideButton(){
-    
-    if(window.resume.length === 1){
-        document.getElementById('prevBtn').style.visibility='hidden';
-        document.getElementById('nxtBtn').style.visibility='hidden';
+function hideButton() {
+
+    if (window.resumeList.length === 1) {
+        document.getElementById('prevBtn').style.visibility = 'hidden';
+        document.getElementById('nxtBtn').style.visibility = 'hidden';
     }
-    if(window.current === 0){
-        document.getElementById('prevBtn').style.visibility='hidden';
+    if (window.current === 0) {
+        document.getElementById('prevBtn').style.visibility = 'hidden';
     }
-    else{
-        document.getElementById('prevBtn').style.visibility='visible';
+    else {
+        document.getElementById('prevBtn').style.visibility = 'visible';
     }
 
-    if(window.current === window.resume.length - 1){
-        document.getElementById('nxtBtn').style.visibility='hidden';
-    }else{
-        document.getElementById('nxtBtn').style.visibility='visible';
+    if (window.current === window.resumeList.length - 1) {
+        document.getElementById('nxtBtn').style.visibility = 'hidden';
+    } else {
+        document.getElementById('nxtBtn').style.visibility = 'visible';
     }
 }
-// document.getElementById('prevBtn').onclick = loadPreviousResume
-// document.getElementById('nextBtn').onclick = loadNextResume
-// function loadNextResume(){
-//     console.log("keypressed")
-// }
 
-// function loadPreviousResume(){
-//     console.log("keypressed")
-onLoad();
-
-window.history.forward();
-        function noBack() {
-            window.history.forward();
+function displaySearchResult() {
+    const input = document.querySelector('#searchBox');
+    input.addEventListener("keypress", setQuery)
+    function setQuery(e) {
+        console.log(input.value)
+        if (e.code === 'Enter') {
+            window.resumeList = window.resumeBackup;
+            if (!input.value) {
+                document.querySelector('.upper').style.visibility = 'visible';
+                document.querySelector('.main').style.visibility = 'visible';
+                document.getElementById('nxtBtn').style.visibility = 'visible';
+                document.querySelector('.error').style.visibility = 'hidden';
+            }
+            else{
+                let results = []
+                for (let resume of window.resumeList) {
+                    if (resume.basics["AppliedFor"].toLowerCase() === input.value.toLowerCase()) {
+                        results.push(resume);
+                    }
+                }
+                if(results.length === 0){
+                    document.querySelector('.upper').style.visibility = 'hidden';
+                    document.querySelector('.main').style.visibility = 'hidden';
+                    document.getElementById('nxtBtn').style.visibility = 'hidden';
+                    document.querySelector('.error').style.visibility = 'visible';
+                    console.log('error');
+                }
+                window.resumeList = results;
+            }
         }
+    }
+    window.current = 0;
+    feedDataToTemplate();
+    console.log('done')
+}
+
+onLoad();
+window.history.forward();
+function noBack() {
+    window.history.forward();
+}
