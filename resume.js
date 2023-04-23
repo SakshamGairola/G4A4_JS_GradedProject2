@@ -7,7 +7,6 @@ function onLoad() {
             window.resumeBackup = window.resumeList
             window.current = 0
             feedDataToTemplate()
-            displaySearchResult()
         });
 
 }
@@ -215,40 +214,30 @@ function hideButton() {
     }
 }
 
-function displaySearchResult() {
-    const input = document.querySelector('#searchBox');
-    input.addEventListener("keypress", setQuery)
-    function setQuery(e) {
-        console.log(input.value)
-        if (e.code === 'Enter') {
-            window.resumeList = window.resumeBackup;
-            if (!input.value) {
-                document.querySelector('.upper').style.visibility = 'visible';
-                document.querySelector('.main').style.visibility = 'visible';
-                document.getElementById('nxtBtn').style.visibility = 'visible';
-                document.querySelector('.error').style.visibility = 'hidden';
-            }
-            else{
-                let results = []
-                for (let resume of window.resumeList) {
-                    if (resume.basics["AppliedFor"].toLowerCase() === input.value.toLowerCase()) {
-                        results.push(resume);
-                    }
-                }
-                if(results.length === 0){
-                    document.querySelector('.upper').style.visibility = 'hidden';
-                    document.querySelector('.main').style.visibility = 'hidden';
-                    document.getElementById('nxtBtn').style.visibility = 'hidden';
-                    document.querySelector('.error').style.visibility = 'visible';
-                    console.log('error');
-                }
-                window.resumeList = results;
-            }
-        }
+function filterByJobTitle(e) {
+    const title = e.target.value.toLowerCase()
+    window.resumeList = window.resumeBackup;
+
+    window.resumeList = window.resumeList.filter(function callBack(resume){
+        const position = resume.basics.AppliedFor.toLowerCase()
+        return position.includes(title)
+    })
+
+    if(!window.resumeList.length){
+        document.querySelector('.upper').style.visibility = 'hidden';
+        document.querySelector('.main').style.visibility = 'hidden';
+        document.getElementById('nxtBtn').style.visibility = 'hidden';
+        document.querySelector('.error').style.display = 'flex';
+        return
     }
+
+    document.querySelector('.upper').style.visibility = 'visible';
+    document.querySelector('.main').style.visibility = 'visible';
+    document.getElementById('nxtBtn').style.visibility = 'visible';
+    document.querySelector('.error').style.display = 'none';
     window.current = 0;
     feedDataToTemplate();
-    console.log('done')
+      
 }
 
 onLoad();
